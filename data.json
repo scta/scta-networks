@@ -1,0 +1,82 @@
+{
+  "nodes": [
+    {
+      "id": "http://scta.info/resource/pgb1q1-ioeqqv",
+      "label": "Paragraph http://scta.info/resource/pgb1q1-ioeqqv",
+      "x": 0,
+      "y": 0,
+      "size": 1
+    },
+    {
+      "id": "http://scta.info/resource/pgb1q11-d1e1606",
+      "label": "Paragraph http://scta.info/resource/pgb1q11-d1e1606",
+      "x": 1,
+      "y": 1,
+      "size": 1
+    },
+    {
+      "id": "http://scta.info/resource/pgb1q11-d1e1625",
+      "label": "Paragraph http://scta.info/resource/pgb1q11-d1e1625",
+      "x": 2,
+      "y": 2,
+      "size": 1
+    },
+    {
+      "id": "http://scta.info/resource/l1-cpspfs",
+      "label": "Paragraph http://scta.info/resource/l1-cpspfs",
+      "x": 3,
+      "y": 3,
+      "size": 1
+    },
+    {
+      "id": "http://scta.info/resource/pll1prol-cadzdd",
+      "label": "Paragraph http://scta.info/resource/pll1prol-cadzdd",
+      "x": 0,
+      "y": 4,
+      "size": 1
+    },
+    {
+      "id": "http://scta.info/resource/pll1d11c1-d1e3477",
+      "label": "Paragraph http://scta.info/resource/pll1d11c1-d1e3477",
+      "x": 1,
+      "y": 5,
+      "size": 1
+    },
+    {
+      "id": "http://scta.info/resource/pll1d11c1-d1e3592",
+      "label": "Paragraph http://scta.info/resource/pll1d11c1-d1e3592",
+      "x": 2,
+      "y": 6,
+      "size": 1
+    },
+    {
+      "id": "http://scta.info/resource/pll1prol-qifacc",
+      "label": "Paragraph http://scta.info/resource/pll1prol-qifacc",
+      "x": 3,
+      "y": 7,
+      "size": 1
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "source": "http://scta.info/resource/pgb1q1-ioeqqv",
+      "target": "http://scta.info/resource/pll1prol-cadzdd"
+    },
+    {
+      "id": "e1",
+      "source": "http://scta.info/resource/pgb1q11-d1e1606",
+      "target": "http://scta.info/resource/pll1d11c1-d1e3477"
+    },
+    {
+      "id": "e2",
+      "source": "http://scta.info/resource/pgb1q11-d1e1625",
+      "target": "http://scta.info/resource/pll1d11c1-d1e3592"
+    },
+    {
+      "id": "e3",
+      "source": "http://scta.info/resource/l1-cpspfs",
+      "target": "http://scta.info/resource/pll1prol-qifacc"
+    }
+  ]
+}

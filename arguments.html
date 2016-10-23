@@ -1,0 +1,134 @@
+<html>
+<head>
+<style type="text/css">
+  #container {
+    width: 70%;
+    margin-left:30%;
+    
+
+  }
+  #argument{
+    float:left;
+    width: 39%;
+    padding:5%;
+  }
+  #response{
+    float:left;
+    width: 39%;
+    padding:5%;
+  }
+
+  #sidebar{
+    background-color: gray;
+    width: 30%;
+
+    height: 100%;
+    overflow: scroll;
+    position:fixed;
+
+  }
+</style>
+<link rel="stylesheet" href="CETEI.css" media="screen" charset="utf-8">
+</head>
+<body>
+  <div id="main">
+    <div id="sidebar">
+      <h1>Principal Arguments</h1>
+      <ul>
+      </ul>
+    </div>
+    <div id="container">
+      <div id="argument">
+        <h1>Argument</h1>
+        <div id="argument-container">
+        </div>
+      </div>
+      <div id="response">
+        <h1>Response</h1>
+        <div id="response-container">
+        </div>
+      </div>
+    </div>
+  </div>
+<script src="CETEI.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+var argumentUrl = "http://scta.info/resource/b1d3qun-qnveid";
+var responseUrl = "http://scta.info/resource/b1d3qun-apaaat" ;
+
+function argumentQuery(){
+  var query = [
+    "SELECT ?argument ?response {",
+    "?arguments <http://scta.info/property/expressionType> <http://scta.info/resource/rationes-principales> .",
+    "?arguments <http://scta.info/property/hasStructureBlock> ?argument .",
+    "?argument <http://scta.info/property/referencedBy> ?response .",
+    "}"
+    ].join('');
+    return query
+  }
+
+
+function query(url){
+  var query = [
+    "SELECT ?pt  {",
+      "<",
+      url,
+      ">",
+      "<http://scta.info/property/hasCanonicalManifestation> ?cm .",
+      "?cm <http://scta.info/property/hasCanonicalTranscription> ?ct  .",
+      "?ct <http://scta.info/property/hasXML> ?pt .",
+      "}",
+    ].join('');
+
+    return query
+}
+
+  sidebarUrl = "http://sparql.scta.info/ds/query?query=" + argumentQuery() + "&output=json";
+  $.get(sidebarUrl, function(data){
+    for (var i = 0; i < data.results.bindings.length; i++) {
+      var argument = data.results.bindings[i].argument.value
+      var response = data.results.bindings[i].response.value
+      $("#sidebar ul").append("<li class='argument-link' data-argument='" + argument + "' data-response='" + response + "'>" + argument + "</li>");
+    }
+
+
+  });
+
+function queryUrl(query){
+    url = "http://sparql.scta.info/ds/query?query=" + query + "&output=json";
+    return url
+  }
+
+
+  $(document).on("click", ".argument-link", function(e){
+    console.log(this);
+    var response = $(this).attr("data-response");
+    var argument = $(this).attr("data-argument");
+    displayPargraph(queryUrl(query(argument)), "argument-container");
+    displayPargraph(queryUrl(query(response)), "response-container");
+  });
+
+
+function displayPargraph(url, elementid){
+  $.get(url, function(data){
+    console.log(data);
+    var CETEIcean = new CETEI();
+    var client = new XMLHttpRequest();
+      client.open('GET', data.results.bindings[0].pt.value);
+      client.send();
+      client.onload = function () {
+        if (this.status >= 200 && this.status < 300) {
+          var TEI = this.response;
+          CETEIcean.makeHTML5(TEI,function(data){
+            document.getElementById(elementid).innerHTML = "";
+            document.getElementById(elementid).appendChild(data);
+            CETEIcean.addStyle(document, data)
+          });
+        }
+      }
+  });
+}
+
+</script>
+</body>
+</html>

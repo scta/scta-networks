@@ -1,0 +1,199 @@
+<html>
+<head>
+<style type="text/css">
+  #container {
+    width: 700px;
+    height: 500px;
+    padding: 20px
+
+  }
+</style>
+<link rel="stylesheet" href="CETEI.css" media="screen" charset="utf-8">
+</head>
+<body>
+  <div style="background-color: lightblue; border-bottom: 3px solid black; padding: 10px;">
+    <p>Results from SPARQL QUERY</p>
+    <code style="width: 300px;">
+      <pre>
+        SELECT ?paragraph ?refparagraph {
+        ?paragraph &lt; http://scta.info/property/quotes &gt; ?refparagraph .
+        ?refparagraph &lt; http://scta.info/property/structureType &gt;  &lt; http://scta.info/resource/structureBlock &gt; .
+        }
+      </pre>
+    </code>
+    <h3>Sample graph of paragraphs that quote other paragraphs</h3>
+</div>
+<div>
+<div id="nodeinfo" style="float:left; width: 400px; height: 500px; padding: 20px; border-right: 3px solid black; margin-right 10px;"></div>
+<div id="container" style="float: left;"></div>
+</div>
+
+
+
+<script src="build/sigma.min.js"></script>
+<script src="build/plugins/sigma.parsers.json.min.js"></script>
+<script src="CETEI.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+
+/*
+g = sigma.parsers.json('data.json', {
+  container: 'container',
+  settings: {
+    defaultNodeColor: '#ec5148'
+  }
+});
+*/
+g = {
+  "nodes": [
+    {
+      "id": "http://scta.info/resource/pgb1q1-ioeqqv",
+      "label": "Paragraph http://scta.info/resource/pgb1q1-ioeqqv",
+      "x": 0,
+      "y": 0,
+      "size": 1
+    },
+    {
+      "id": "http://scta.info/resource/pgb1q11-d1e1606",
+      "label": "Paragraph http://scta.info/resource/pgb1q11-d1e1606",
+      "x": 1,
+      "y": 1,
+      "size": 1
+    },
+    {
+      "id": "http://scta.info/resource/pgb1q11-d1e1625",
+      "label": "Paragraph http://scta.info/resource/pgb1q11-d1e1625",
+      "x": 2,
+      "y": 2,
+      "size": 1
+    },
+    {
+      "id": "http://scta.info/resource/l1-cpspfs",
+      "label": "Paragraph http://scta.info/resource/l1-cpspfs",
+      "x": 3,
+      "y": 3,
+      "size": 1
+    },
+    {
+      "id": "http://scta.info/resource/pll1prol-cadzdd",
+      "label": "Paragraph http://scta.info/resource/pll1prol-cadzdd",
+      "x": 0,
+      "y": 4,
+      "size": 1
+    },
+    {
+      "id": "http://scta.info/resource/pll1d11c1-d1e3477",
+      "label": "Paragraph http://scta.info/resource/pll1d11c1-d1e3477",
+      "x": 1,
+      "y": 5,
+      "size": 1
+    },
+    {
+      "id": "http://scta.info/resource/pll1d11c1-d1e3592",
+      "label": "Paragraph http://scta.info/resource/pll1d11c1-d1e3592",
+      "x": 2,
+      "y": 6,
+      "size": 1
+    },
+    {
+      "id": "http://scta.info/resource/pll1prol-qifacc",
+      "label": "Paragraph http://scta.info/resource/pll1prol-qifacc",
+      "x": 3,
+      "y": 7,
+      "size": 1
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "source": "http://scta.info/resource/pgb1q1-ioeqqv",
+      "target": "http://scta.info/resource/pll1prol-cadzdd"
+    },
+    {
+      "id": "e1",
+      "source": "http://scta.info/resource/pgb1q11-d1e1606",
+      "target": "http://scta.info/resource/pll1d11c1-d1e3477"
+    },
+    {
+      "id": "e2",
+      "source": "http://scta.info/resource/pgb1q11-d1e1625",
+      "target": "http://scta.info/resource/pll1d11c1-d1e3592"
+    },
+    {
+      "id": "e3",
+      "source": "http://scta.info/resource/l1-cpspfs",
+      "target": "http://scta.info/resource/pll1prol-qifacc"
+    }
+  ]
+}
+
+s = new sigma({
+  graph: g,
+  renderer: {
+    container: document.getElementById('container'),
+    type: 'canvas'
+  },
+  settings: {
+    doubleClickEnabled: false,
+    minEdgeSize: 0.5,
+    maxEdgeSize: 4,
+    enableEdgeHovering: true,
+    edgeHoverColor: 'edge',
+    defaultEdgeHoverColor: '#000',
+    edgeHoverSizeRatio: 1,
+    edgeHoverExtremities: true,
+  }
+});
+
+  s.bind('clickNode', function(e) {
+    console.log("test");
+    console.log(e);
+	$('#nodeinfo').html('<a href="' + e.data.node.id + '">' + e.data.node.id + '</a>');
+
+  var query = [
+    "SELECT ?pt  {",
+      "<",
+      e.data.node.id,
+      ">",
+      "<http://scta.info/property/hasCanonicalManifestation> ?cm .",
+      "?cm <http://scta.info/property/hasCanonicalTranscription> ?ct  .",
+      "?ct <http://scta.info/property/hasXML> ?pt .",
+      "}",
+    ].join('');
+  url = "http://sparql.scta.info/ds/query?query=" + query + "&output=json";
+  $.get(url, function(data){
+    console.log(data);
+    //$.get(data.results.bindings[0].pt.value, function(text){
+    //  console.log(text);
+    var CETEIcean = new CETEI();
+    var client = new XMLHttpRequest();
+      client.open('GET', data.results.bindings[0].pt.value);
+      client.send();
+      client.onload = function () {
+        if (this.status >= 200 && this.status < 300) {
+          var TEI = this.response;
+          CETEIcean.makeHTML5(TEI,function(data){
+            document.getElementById("nodeinfo").appendChild(data);
+            CETEIcean.addStyle(document, data)
+          });
+        }
+      }
+      /*
+      result = text.evaluate("//tei:p", text,
+        function (ns) {
+          return "http://www.tei-c.org/ns/1.0"
+        },
+        XPathResult.FIRST_ORDERED_NODE_TYPE,
+        null
+      ).singleNodeValue;
+      console.log(result)
+      */
+
+    //});
+  });
+});
+
+
+</script>
+</body>
+</html>
