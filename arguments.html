@@ -96,7 +96,7 @@ function query(url){
   });
 
 function queryUrl(query){
-    url = "http://sparql.scta.info/ds/query?query=" + query + "&output=json";
+    url = "https://sparql.scta.info/ds/query?query=" + query + "&output=json";
     return url
   }
 
@@ -111,6 +111,7 @@ function queryUrl(query){
 
 
 function displayPargraph(url, elementid){
+  var url = url.replace(/^http:\/\//i, 'https://');
   $.get(url, function(data){
     console.log(data);
     var CETEIcean = new CETEI();
