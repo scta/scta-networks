@@ -111,12 +111,12 @@ function queryUrl(query){
 
 
 function displayPargraph(url, elementid){
-  var new_url = url.replace(/^http:\/\//i, 'https://');
-  $.get(new_url, function(data){
-    console.log(data);
+  $.get(url, function(data){
     var CETEIcean = new CETEI();
     var client = new XMLHttpRequest();
-      client.open('GET', data.results.bindings[0].pt.value);
+    var xml_url = data.results.bindings[0].pt.value;
+    var new_xml_url = xml_url.replace(/^http:\/\//i, 'https://');
+      client.open('GET', new_xml_url);
       client.send();
       client.onload = function () {
         if (this.status >= 200 && this.status < 300) {
