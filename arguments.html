@@ -83,7 +83,7 @@ function query(url){
     return query
 }
 
-  sidebarUrl = "http://sparql-staging.scta.info/ds/query?query=" + argumentQuery() + "&output=json";
+  sidebarUrl = "https://sparql-staging.scta.info/ds/query?query=" + argumentQuery() + "&output=json";
   //sidebarUrl = "http://localhost:3030/ds/query?query=" + argumentQuery() + "&output=json";
   $.get(sidebarUrl, function(data){
     for (var i = 0; i < data.results.bindings.length; i++) {
